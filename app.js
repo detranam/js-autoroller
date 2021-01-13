@@ -8,17 +8,17 @@ class Die {
     constructor(sides) {
         this.sides = sides;
     }
-    static roll() {
-        return Math.floor((Math.random() * sides) + 1);
+    roll() {
+        return Math.floor((Math.random() * this.sides) + 1);
     }
-    static rollTwoDropLowest() {
-        var first_roll = Math.floor((Math.random() * sides) + 1);
-        var second_roll = Math.floor((Math.random() * sides) + 1);
+    rollTwoDropLowest() {
+        var first_roll = Math.floor((Math.random() *this.sides) + 1);
+        var second_roll = Math.floor((Math.random() * this.sides) + 1);
         return first_roll > second_roll ? first_roll : second_roll;
     }
 }
 
-let d10 = new Die(10);
+const d10 = new Die(sides = 10);
 //Create an array of size 10 with our correct values in them, to be displayed.
 var characterStats = [
     d10.rollTwoDropLowest(),
@@ -32,6 +32,8 @@ var characterStats = [
     d10.rollTwoDropLowest(),
     d10.rollTwoDropLowest()
 ]
+
+characterStats.sort(function(a,b){return b-a});
 
 console.log(characterStats);
 
