@@ -18,6 +18,7 @@ class Die {
     }
 }
 
+const { RSA_X931_PADDING } = require('constants');
 var readline = require('readline');
 
 var statNames = [
@@ -63,26 +64,41 @@ new Promise((resolve, reject) => {
     });
     rl.question("Enter your EMP value... ", function (answer) {
         var EMP = parseInt(answer.trim());
-        console.log("Your Humanity is %i", EMP*10);
+        console.log("Your Humanity is %i", EMP * 10);
         rl.close();
     });
-})
-
-
-
-//This acquires the MA value, which will calculate
-//run = 3 * MA, usable three times
-//leap = run / 4
-var rl = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout
+    //return 0;
+}).then(() => {
+    var rl = readline.createInterface({
+        input: process.stdin,
+        output: process.stdout
+    });
+    rl.question("Enter your MA value... ", function (answer) {
+        var MA = parseFloat(answer.trim());
+        console.log("Your Run value is %i, usable three times", MA * 3);
+        console.log("Your Leap value is %f", MA * 3 / 4);
+        rl.close();
+    });
 });
-rl.question("Enter your MA value... ", function (answer) {
-    var MA = parseFloat(answer.trim());
-    console.log("Your Run value is %i, usable three times", MA * 3);
-    console.log("Your Leap value is %f", MA * 3 / 4);
-    rl.close();
-});
+// .then(() =>{
+
+// })
+
+
+
+// //This acquires the MA value, which will calculate
+// //run = 3 * MA, usable three times
+// //leap = run / 4
+// var rl = readline.createInterface({
+//     input: process.stdin,
+//     output: process.stdout
+// });
+// rl.question("Enter your MA value... ", function (answer) {
+//     var MA = parseFloat(answer.trim());
+//     console.log("Your Run value is %i, usable three times", MA * 3);
+//     console.log("Your Leap value is %f", MA * 3 / 4);
+//     rl.close();
+// });
 
 // //This acquires the BODY value, which will calculate
 // //lift = 40*body
