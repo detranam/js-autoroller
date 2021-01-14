@@ -20,11 +20,6 @@ class Die {
 
 var readline = require('readline');
 
-var rl = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout
-});
-
 var statNames = [
     "INT",
     "REF",
@@ -59,19 +54,66 @@ TODO: I want to give the user the ability to assign their own points, so that
 the 'input' where we ask for their stats can be excluded.
 */
 
-var response; //EMP value
-rl.question("Enter your EMP value... ", function (answer) {
-    response = answer.trim();
+//This acquires your EMP value, which will calculate
+//humanity = 10*EMP
+new Promise((resolve, reject) => {
+    var rl = readline.createInterface({
+        input: process.stdin,
+        output: process.stdout
+    });
+    rl.question("Enter your EMP value... ", function (answer) {
+        var EMP = parseInt(answer.trim());
+        console.log("Your Humanity is %i", EMP*10);
+        rl.close();
+    });
+})
+
+
+
+//This acquires the MA value, which will calculate
+//run = 3 * MA, usable three times
+//leap = run / 4
+var rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
+});
+rl.question("Enter your MA value... ", function (answer) {
+    var MA = parseFloat(answer.trim());
+    console.log("Your Run value is %i, usable three times", MA * 3);
+    console.log("Your Leap value is %f", MA * 3 / 4);
     rl.close();
 });
 
-
-console.log(response);
-//var EMP = parseInt(response);
-//console.log("Your humanity is %i", EMP*10);
-
-
-// rl.question("Enter your EMP value: ", function (answer) {
-//     response = answer;
+// //This acquires the BODY value, which will calculate
+// //lift = 40*body
+// //save = body
+// //BTM = switch(bodyval) 
+// //  1-2 = 0
+// //  3-4 = -1
+// //  5-7 = -2
+// //  8-9 = -3
+// //  10 = -4
+// //  11+ = -5
+// var rl = readline.createInterface({
+//     input: process.stdin,
+//     output: process.stdout
+// });
+// rl.question("Enter your BODY value... ", function (answer) {
+//     var BODY = parseFloat(answer.trim());
+//     console.log("Your Lift value is %i", BODY * 40);
+//     console.log("Your Save value is %i", BODY);
+//     var BTM = 0;
+//     if ((BODY > 2) && (BODY <= 4)){
+//         BTM = -1;
+//     } else if ((BODY > 4) && (BODY <= 7)) {
+//         BTM = -2;
+//     } else if ((BODY > 7) && (BODY <= 9)){
+//         BTM = -3;
+//     } else if (BODY == 10) {
+//         BTM = -4;
+//     } else {
+//         BTM = -5;
+//     }
+//     console.log("Your BTM value is %i", BTM);
 //     rl.close();
 // });
