@@ -19,7 +19,11 @@ class Die {
 }
 
 const { RSA_X931_PADDING } = require('constants');
-var readline = require('readline');
+const readline = require('readline');
+const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
+});
 
 var statNames = [
     "INT",
@@ -32,23 +36,24 @@ var statNames = [
     "BODY",
     "EMP"
 ]
+const rollStats = () => {
+    const d10 = new Die(sides = 10);
+    //Create an array of size 10 with our correct values in them, to be displayed.
+    var characterStats = [
+        d10.rollTwoDropLowest(),
+        d10.rollTwoDropLowest(),
+        d10.rollTwoDropLowest(),
+        d10.rollTwoDropLowest(),
+        d10.rollTwoDropLowest(),
+        d10.rollTwoDropLowest(),
+        d10.rollTwoDropLowest(),
+        d10.rollTwoDropLowest(),
+        d10.rollTwoDropLowest()
+    ]
+    characterStats.sort(function (a, b) { return b - a });
+    console.log(characterStats);
+}
 
-const d10 = new Die(sides = 10);
-//Create an array of size 10 with our correct values in them, to be displayed.
-var characterStats = [
-    d10.rollTwoDropLowest(),
-    d10.rollTwoDropLowest(),
-    d10.rollTwoDropLowest(),
-    d10.rollTwoDropLowest(),
-    d10.rollTwoDropLowest(),
-    d10.rollTwoDropLowest(),
-    d10.rollTwoDropLowest(),
-    d10.rollTwoDropLowest(),
-    d10.rollTwoDropLowest()
-]
-
-characterStats.sort(function (a, b) { return b - a });
-console.log(characterStats);
 
 /*
 TODO: I want to give the user the ability to assign their own points, so that
@@ -57,29 +62,66 @@ the 'input' where we ask for their stats can be excluded.
 
 //This acquires your EMP value, which will calculate
 //humanity = 10*EMP
-new Promise((resolve, reject) => {
-    var rl = readline.createInterface({
-        input: process.stdin,
-        output: process.stdout
-    });
-    rl.question("Enter your EMP value... ", function (answer) {
-        var EMP = parseInt(answer.trim());
-        console.log("Your Humanity is %i", EMP * 10);
-        rl.close();
-    });
-    //return 0;
-}).then(() => {
-    var rl = readline.createInterface({
-        input: process.stdin,
-        output: process.stdout
-    });
-    rl.question("Enter your MA value... ", function (answer) {
-        var MA = parseFloat(answer.trim());
-        console.log("Your Run value is %i, usable three times", MA * 3);
-        console.log("Your Leap value is %f", MA * 3 / 4);
-        rl.close();
-    });
-});
+const utilizeEMP = () => {
+    return new Promise((resolve, reject) => {
+        rl.question("Enter your EMP value... ", function (answer) {
+            var EMP = parseInt(answer.trim());
+            console.log("Your Humanity is %i", EMP * 10);
+            resolve();
+        })
+    })
+}
+
+const utilizeMA = () => {
+    return new Promise((resolve, reject) => {
+        rl.question("Enter your MA value... ", function (answer) {
+            var MA = parseFloat(answer.trim());
+            console.log("Your Run value is %i, usable three times", MA * 3);
+            console.log("Your Leap value is %f", MA * 3 / 4);
+            resolve();
+        })
+    })
+}
+
+const utilizeBA = () => {
+    return new Promise((resolve, reject) => {
+        rl.question("Enter your BODY value... ", function (answer) {
+            var BODY = parseFloat(answer.trim());
+            console.log("Your Lift value is %i", BODY * 40);
+            console.log("Your Save value is %i", BODY);
+
+            var BTM;
+            if ((BODY > 0) && (BODY <=2)){
+                BTM = 0;
+            } else if ((BODY > 2) && (BODY <= 4)){
+                BTM = -1;
+            } else if ((BODY > 4) && (BODY <= 7)) {
+                BTM = -2;
+            } else if ((BODY > 7) && (BODY <= 9)){
+                BTM = -3;
+            } else if (BODY == 10) {
+                BTM = -4;
+            } else {
+                BTM = -5;
+            }
+            console.log("Your BTM value is %i", BTM);
+            resolve();
+        })
+    })
+}
+
+
+
+const main = async () => {
+    rollStats();
+    await utilizeEMP();
+    await utilizeMA();
+    await utilizeBA();
+    rl.close();
+}
+
+main();
+
 // .then(() =>{
 
 // })
