@@ -72,6 +72,9 @@ const utilizeEMP = () => {
     })
 }
 
+//This acquires the MA value, which will calculate
+//run = 3 * MA, usable three times
+//leap = run / 4
 const utilizeMA = () => {
     return new Promise((resolve, reject) => {
         rl.question("Enter your MA value... ", function (answer) {
@@ -83,6 +86,16 @@ const utilizeMA = () => {
     })
 }
 
+//This acquires the BODY value, which will calculate
+//lift = 40*body
+//save = body
+//BTM = switch(bodyval) 
+//  1-2 = 0
+//  3-4 = -1
+//  5-7 = -2
+//  8-9 = -3
+//  10 = -4
+//  11+ = -5
 const utilizeBA = () => {
     return new Promise((resolve, reject) => {
         rl.question("Enter your BODY value... ", function (answer) {
@@ -111,7 +124,7 @@ const utilizeBA = () => {
 }
 
 
-
+// Define our program to 
 const main = async () => {
     rollStats();
     await utilizeEMP();
@@ -120,58 +133,5 @@ const main = async () => {
     rl.close();
 }
 
+// Finally run the program
 main();
-
-// .then(() =>{
-
-// })
-
-
-
-// //This acquires the MA value, which will calculate
-// //run = 3 * MA, usable three times
-// //leap = run / 4
-// var rl = readline.createInterface({
-//     input: process.stdin,
-//     output: process.stdout
-// });
-// rl.question("Enter your MA value... ", function (answer) {
-//     var MA = parseFloat(answer.trim());
-//     console.log("Your Run value is %i, usable three times", MA * 3);
-//     console.log("Your Leap value is %f", MA * 3 / 4);
-//     rl.close();
-// });
-
-// //This acquires the BODY value, which will calculate
-// //lift = 40*body
-// //save = body
-// //BTM = switch(bodyval) 
-// //  1-2 = 0
-// //  3-4 = -1
-// //  5-7 = -2
-// //  8-9 = -3
-// //  10 = -4
-// //  11+ = -5
-// var rl = readline.createInterface({
-//     input: process.stdin,
-//     output: process.stdout
-// });
-// rl.question("Enter your BODY value... ", function (answer) {
-//     var BODY = parseFloat(answer.trim());
-//     console.log("Your Lift value is %i", BODY * 40);
-//     console.log("Your Save value is %i", BODY);
-//     var BTM = 0;
-//     if ((BODY > 2) && (BODY <= 4)){
-//         BTM = -1;
-//     } else if ((BODY > 4) && (BODY <= 7)) {
-//         BTM = -2;
-//     } else if ((BODY > 7) && (BODY <= 9)){
-//         BTM = -3;
-//     } else if (BODY == 10) {
-//         BTM = -4;
-//     } else {
-//         BTM = -5;
-//     }
-//     console.log("Your BTM value is %i", BTM);
-//     rl.close();
-// });
