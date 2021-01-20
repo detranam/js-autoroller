@@ -25,17 +25,7 @@ const rl = readline.createInterface({
     output: process.stdout
 });
 
-var statNames = [
-    "INT",
-    "REF",
-    "TECH",
-    "COOL",
-    "ATTR",
-    "LUCK",
-    "MA",
-    "BODY",
-    "EMP"
-]
+
 const rollStats = () => {
     const d10 = new Die(sides = 10);
     //Create an array of size 10 with our correct values in them, to be displayed.
@@ -66,7 +56,7 @@ const utilizeEMP = () => {
     return new Promise((resolve, reject) => {
         rl.question("Enter your EMP value... ", function (answer) {
             var EMP = parseInt(answer.trim());
-            console.log("Your Humanity is %i", EMP * 10);
+            console.log("Your starting Humanity is %i", EMP * 10);
             resolve();
         })
     })
@@ -124,7 +114,7 @@ const utilizeBA = () => {
 }
 
 
-// Define our program to 
+// Define our program's running order
 const main = async () => {
     rollStats();
     await utilizeEMP();
