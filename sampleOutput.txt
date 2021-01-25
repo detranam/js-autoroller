@@ -1,0 +1,26 @@
+_________________________________________
+|[NAME: Peter Parker] [ROLE: Netrunner] |
+|_______________________________________|
+|[COOL 10] [INT  10] [TECH 14] [ATTR 12]|
+|[LUCK 11] [MA   22] [BODY 33] [RUN  11]|
+|[LEAP 22] [LIFT 33] [REF |CH/CH]       |
+|          [EMP |CH/CH]                 |
+|_______________________________________|
+|SPECIAL ABILITY: ability_name          |
+|_______________________________________|
+|Cybernetics:                           |
+|   cybernetic 1 (ref number maybe?)    |
+|   cybernetic 2 (...)                  |
+|   cyberne........                     |
+|_______________________________________|
+|Skills:                                |
+|   same...                             |
+|   as...                               |
+|   above...                            |
+|_______________________________________|
+|Possessions:                           |
+|   MoneyAmount- number                 |
+|   same...                             |
+|   as...                               |
+|   above...                            |
+|_______________________________________|
