@@ -43,14 +43,10 @@ const rollStats = () => {
     console.log(characterStats);
 }
 
-
-/*
-TODO: I want to give the user the ability to assign their own points, so that
-the 'input' where we ask for their stats can be excluded.
-*/
-
 //This acquires your EMP value, which will calculate
 //humanity = 10*EMP
+//Humanity and empathy are 1:10, every 10 lost humanity is 1 lost empathy, they're tied together. 
+//71 humanity is still 8 empathy, 70 humanity is then 7 empathy
 const utilizeEMP = () => {
     return new Promise((resolve, reject) => {
         rl.question("Enter your EMP value... ", function (answer) {

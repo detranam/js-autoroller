@@ -6,7 +6,6 @@ In all honesty, this app is going to expand a lot. I'm going to need to add some
 
 ## TODO
 
-- [ ] Humanity and empathy are 1:10, every 10 lost humanity is 1 lost empathy, they're tied together. 71 humanity is still 8 empathy, 70 humanity is then 7 empathy
 - [x] Autoroll and print stats.
 - [x] Allow user input of data in order to calculate various statistics.
 - [ ] Create character object for a 'one shot expendable' character. This should lay most of the groundwork for creating a 'full' character object
