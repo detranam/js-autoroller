@@ -33,7 +33,7 @@ class CyberpunkCharacter {
         this.emp = baseStats[8];
         this.currentLevel = recentlyFinishedLevel;
         this.deriveOtherStats();
-        this.randomRole();
+        this.generateJobSkillsMoney();
     }
     // Create all other stats based on the base stats
     deriveOtherStats() {
@@ -57,7 +57,7 @@ class CyberpunkCharacter {
             this.btm = -5;
         }
     }
-    randomRole() {
+    generateJobSkillsMoney() {
         var randomRole = Math.floor((Math.random() * 10) + 1);
         switch (randomRole) {
             case 1:
@@ -217,6 +217,8 @@ const main = async () => {
         d10.rollTwoDropLowest()
     ]
     var oneshot = new CyberpunkCharacter("Peotyr Parkyr", characterStats, 0);
+    console.log(oneshot);
+    rl.close();
 }
 // Finally run the program
 main();
