@@ -1,6 +1,5 @@
 import csv
 import json
-import argparse
 import os
 
 '''
@@ -28,9 +27,14 @@ else:
 
 # json-ify all the *.csv files into a json file with the same name
 for path in csv_files_to_read:
-    with open(path, 'r') as csv_file:
-        inputdict = csv.DictReader(csv_file)
-        this_weapon_type_dict = []
-        for row in inputdict:
-            this_weapon_type_dict.append(row)
-        print(json.dumps(this_weapon_type_dict))
+    output_path = 'json_out/{path}.json'
+    with open(output_path, 'w') as json_out:
+        with open(path, 'r') as csv_file:
+            inputdict = csv.DictReader(csv_file)
+            this_weapon_type_dict = []
+            for row in inputdict:
+                this_weapon_type_dict.append(row)
+            print("JSON.Dumping {path} to {output_path}!")
+            json.dump(this_weapon_type_dict, json_out)
+
+    
