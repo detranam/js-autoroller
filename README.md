@@ -8,8 +8,9 @@ In all honesty, this app is going to expand a lot. I'm going to need to add some
 
 - [x] Autoroll and print stats.
 - [x] Allow user input of data in order to calculate various statistics.
-- [x] Create character object for a 'one shot expendable' character. This should lay most of the groundwork for creating a 'full' character object
-- [x] python (?) scraper for Spreadsheets to allow for easier data input: new folder with various 'tools' inside to allow data collection
+- [x] Create character object for a 'one shot expendable' character. This should lay most of the groundwork for creating a 'full' character object.
+- [x] Python scraper for Spreadsheets to allow for easier data input: new folder with various 'tools' inside to allow data collection.
+- [ ] Extract certain files as either folders or modules, whichever would make the code most readable and maintainable.
 - [ ] Create a pdf exporter for the 'one shot' character object
 - [ ] Create a full-fledged character object to allow for different saved outputs into JSON format. This should effectively be created as a copy of the character sheet to allow easy query of, for example.
 - [ ] HTML/Flask (?) GUI for assigning character traits. This might be easiest done by utilizing python and flask, as I've done that before and it's not very difficult.

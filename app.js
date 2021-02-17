@@ -119,15 +119,16 @@ class CyberpunkOneShotCharacter {
         sheet += "|[LUCK " + this.formatstat(this.luck) + "] [MA   " + this.formatstat(this.ma) + "]" +
             "[BODY " + this.formatstat(this.body) + "] [RUN  " + this.formatstat(this.run) + "]|\n"
         //Print the third line of stats
-            sheet += "|[LEAP " + this.formatstat(this.leap) + "] [LIFT " + this.formatstat(this.lift) + "]"+ 
-        "[REF |" + this.formatstat(this.tempref) + "/" + this.formatstat(this.ref) + "]       |\n" +
-        //Print the final line of status
-        "|          [EMP |" + this.formatstat(this.tempemp) + "/" + this.formatstat(this.emp) + "]                 |"
+        sheet += "|[LEAP " + this.formatstat(this.leap) + "] [LIFT " + this.formatstat(this.lift) + "]" +
+            "[REF |" + this.formatstat(this.tempref) + "/" + this.formatstat(this.ref) + "]       |\n" +
+            //Print the final line of status
+            "|          [EMP |" + this.formatstat(this.tempemp) + "/" + this.formatstat(this.emp) + "]                 |"
     }
 }
 
-const { RSA_X931_PADDING } = require('constants');
-const readline = require('readline');
+const { RSA_X931_PADDING } = require('constants')
+const readline = require('readline')
+const fs = require('fs')
 
 const rollStats = () => {
     const d10 = new Die(sides = 10);
@@ -143,8 +144,8 @@ const rollStats = () => {
         d10.rollTwoDropLowest(),
         d10.rollTwoDropLowest()
     ]
-    characterStats.sort(function (a, b) { return b - a });
-    console.log(characterStats);
+    characterStats.sort(function (a, b) { return b - a })
+    console.log(characterStats)
 }
 
 //This acquires your EMP value, which will calculate
