@@ -18,12 +18,13 @@ class Die {
     }
 }
 
-class CyberpunkCharacter {
+class CyberpunkOneShotCharacter {
     // Randomly assigns stats
     constructor(name, baseStats, recentlyFinishedLevel) {
         this.name = name;
         this.int = baseStats[0];
         this.ref = baseStats[1];
+        this.tempref = baseStats[1];
         this.tech = baseStats[2];
         this.cool = baseStats[3];
         this.attr = baseStats[4];
@@ -31,6 +32,7 @@ class CyberpunkCharacter {
         this.ma = baseStats[6];
         this.body = baseStats[7];
         this.emp = baseStats[8];
+        this.tempemp = baseStats[8];
         this.currentLevel = recentlyFinishedLevel;
         this.deriveOtherStats();
         this.generateJobSkillsMoney();
@@ -95,18 +97,37 @@ class CyberpunkCharacter {
                 throw 'randomRole() somehow got a value that is not between 1 and 10!';
                 break;
         }
-        this.money = 8000 + this.currentLevel*2000;
-        this.classSkillPoints = 40 + this.currentLevel*5;
-        this.standardSkillPoints = 20 + this.currentLevel*3
+        this.money = 8000 + this.currentLevel * 2000;
+        this.classSkillPoints = 40 + this.currentLevel * 5;
+        this.standardSkillPoints = 20 + this.currentLevel * 3;
+    }
+    formatstat(stat) {
+        return ('0' + stat).slice(-2)
+    }
+    printCharacterToTxt() {
+        //According to research, simply doing '+' to concat strings is
+        //the fastest way to create a large string. This means that I
+        //will be individually building each character sheet line-by-line.
+        //Print the header portion
+        sheet = "============================================================" + //60*'='
+            "[NAME: " + this.name + "] ROLE: [" + this.role + "]\n" +
+            "============================================================" //60*'='
+        //Print the first line of stats
+        sheet += "|[COOL " + this.formatstat(this.cool) + "] [INT  " + this.formatstat(this.int) + "]" +
+            "[TECH" + this.formatstat(this.tech) + "] [ATTR " + this.formatstat(this.attr) + "]|\n"
+        //Print second line of stats
+        sheet += "|[LUCK " + this.formatstat(this.luck) + "] [MA   " + this.formatstat(this.ma) + "]" +
+            "[BODY " + this.formatstat(this.body) + "] [RUN  " + this.formatstat(this.run) + "]|\n"
+        //Print the third line of stats
+            sheet += "|[LEAP " + this.formatstat(this.leap) + "] [LIFT " + this.formatstat(this.lift) + "]"+ 
+        "[REF |" + this.formatstat(this.tempref) + "/" + this.formatstat(this.ref) + "]       |\n" +
+        //Print the final line of status
+        "|          [EMP |" + this.formatstat(this.tempemp) + "/" + this.formatstat(this.emp) + "]                 |"
     }
 }
 
 const { RSA_X931_PADDING } = require('constants');
 const readline = require('readline');
-const rl = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout
-});
 
 const rollStats = () => {
     const d10 = new Die(sides = 10);
@@ -204,6 +225,11 @@ const inputBA = () => {
 
 // This main is for fully creating a 'one-shot' Cyberpunk character
 const main = async () => {
+    const rl = readline.createInterface({
+        input: process.stdin,
+        output: process.stdout
+    });
+
     const d10 = new Die(sides = 10);
     var characterStats = [
         d10.rollTwoDropLowest(),
@@ -216,7 +242,7 @@ const main = async () => {
         d10.rollTwoDropLowest(),
         d10.rollTwoDropLowest()
     ]
-    var oneshot = new CyberpunkCharacter("Peotyr Parkyr", characterStats, 0);
+    var oneshot = new CyberpunkOneShotCharacter("Peotyr Parkyr", characterStats, 0);
     console.log(oneshot);
     rl.close();
 }
