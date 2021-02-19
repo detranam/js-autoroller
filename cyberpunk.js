@@ -1,5 +1,10 @@
 module.exports = class CyberpunkOneShotCharacter {
-    // Randomly assigns stats
+    /**
+     * 
+     * @param {String} name             the character's name
+     * @param {Int8Array} baseStats     the size 9 array containing all stats
+     * @param {Number} recentlyFinishedLevel the most recently finished level
+     */
     constructor(name, baseStats, recentlyFinishedLevel) {
         this.name = name;
         this.int = baseStats[0];
@@ -13,14 +18,16 @@ module.exports = class CyberpunkOneShotCharacter {
         this.body = baseStats[7];
         this.emp = baseStats[8];
         this.tempemp = baseStats[8];
-        this.currentLevel = recentlyFinishedLevel;
+        this.currentLevel = parseInt(recentlyFinishedLevel); //ensure the level is an int
         this.deriveOtherStats();
         this.generateJobSkillsMoney();
     }
-    // Create all other stats based on the base stats
+    /**
+     * Derives some other 'secondary' statistics for the character
+     */
     deriveOtherStats() {
         this.run = this.ma * 3;
-        this.leap = this.run / 4;
+        this.leap = Math.round(this.run / 4);
         this.lift = this.body * 40;
         this.save = this.body;
         this.humanity = this.emp * 10;
@@ -39,6 +46,10 @@ module.exports = class CyberpunkOneShotCharacter {
             this.btm = -5;
         }
     }
+    /**
+     * Generate the character's job, skills, and money based on the 
+     * 'previously completed level'
+     */
     generateJobSkillsMoney() {
         var randomRole = Math.floor((Math.random() * 10) + 1);
         switch (randomRole) {
@@ -81,27 +92,32 @@ module.exports = class CyberpunkOneShotCharacter {
         this.classSkillPoints = 40 + this.currentLevel * 5;
         this.standardSkillPoints = 20 + this.currentLevel * 3;
     }
-    formatstat(stat) {
+    /**
+     * This helper method is only used when printing out the character sheet, as it will convert
+     * single digit numbers (4) to (04), allowing for a nicer looking table in the output.
+     * @param {Number} stat (integer) stat to be given filler zeroes, if necessary
+     */
+    _formatstat(stat) {
         return ('0' + stat).slice(-2)
     }
+    /**
+     * This prints the character to an easily human-readable {NAME}.txt file
+     */
     printCharacterToTxt() {
-        //According to research, simply doing '+' to concat strings is
-        //the fastest way to create a large string. This means that I
-        //will be individually building each character sheet line-by-line.
         //Print the header portion
         sheet = "============================================================" + //60*'='
             "[NAME: " + this.name + "] ROLE: [" + this.role + "]\n" +
             "============================================================" //60*'='
         //Print the first line of stats
-        sheet += "|[COOL " + this.formatstat(this.cool) + "] [INT  " + this.formatstat(this.int) + "]" +
-            "[TECH" + this.formatstat(this.tech) + "] [ATTR " + this.formatstat(this.attr) + "]|\n"
+        sheet += "|[COOL " + this._formatstat(this.cool) + "] [INT  " + this._formatstat(this.int) + "]" +
+            "[TECH" + this._formatstat(this.tech) + "] [ATTR " + this._formatstat(this.attr) + "]|\n"
         //Print second line of stats
-        sheet += "|[LUCK " + this.formatstat(this.luck) + "] [MA   " + this.formatstat(this.ma) + "]" +
-            "[BODY " + this.formatstat(this.body) + "] [RUN  " + this.formatstat(this.run) + "]|\n"
+        sheet += "|[LUCK " + this._formatstat(this.luck) + "] [MA   " + this._formatstat(this.ma) + "]" +
+            "[BODY " + this._formatstat(this.body) + "] [RUN  " + this._formatstat(this.run) + "]|\n"
         //Print the third line of stats
-        sheet += "|[LEAP " + this.formatstat(this.leap) + "] [LIFT " + this.formatstat(this.lift) + "]" +
-            "[REF |" + this.formatstat(this.tempref) + "/" + this.formatstat(this.ref) + "]       |\n" +
-            //Print the final line of status
-            "|          [EMP |" + this.formatstat(this.tempemp) + "/" + this.formatstat(this.emp) + "]                 |"
+        sheet += "|[LEAP " + this._formatstat(this.leap) + "] [LIFT " + this._formatstat(this.lift) + "]" +
+            "[REF |" + this._formatstat(this.tempref) + "/" + this._formatstat(this.ref) + "]       |\n"
+        //Print the final line of status
+        sheet += "|          [EMP |" + this._formatstat(this.tempemp) + "/" + this._formatstat(this.emp) + "]                 |"
     }
 }
