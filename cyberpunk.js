@@ -1,6 +1,6 @@
 module.exports = class CyberpunkOneShotCharacter {
     /**
-     * 
+     * Constructor to create a new character, will call all necessary
      * @param {String} name             the character's name
      * @param {Int8Array} baseStats     the size 9 array containing all stats
      * @param {Number} recentlyFinishedLevel the most recently finished level
@@ -18,6 +18,7 @@ module.exports = class CyberpunkOneShotCharacter {
         this.body = baseStats[7];
         this.emp = baseStats[8];
         this.tempemp = baseStats[8];
+
         this.currentLevel = parseInt(recentlyFinishedLevel); //ensure the level is an int
         this.deriveOtherStats();
         this.generateJobSkillsMoney();
@@ -84,10 +85,10 @@ module.exports = class CyberpunkOneShotCharacter {
                 this.role = 'Nomad';
                 break;
             default:
-                //Ideally this should never be reached, if so, just cry
+                //Ideally this should never be reached, if we did reach it, just cry
                 throw 'randomRole() somehow got a value that is not between 1 and 10!';
-                break;
         }
+        //now we take into account if the character is created at the start or in the middle of the campaign
         this.money = 8000 + this.currentLevel * 2000;
         this.classSkillPoints = 40 + this.currentLevel * 5;
         this.standardSkillPoints = 20 + this.currentLevel * 3;
@@ -100,6 +101,7 @@ module.exports = class CyberpunkOneShotCharacter {
     _formatstat(stat) {
         return ('0' + stat).slice(-2)
     }
+    
     /**
      * This prints the character to an easily human-readable {NAME}.txt file
      */
