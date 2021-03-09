@@ -1,9 +1,9 @@
 module.exports = class CyberpunkOneShotCharacter {
     /**
      * Constructor to create a new character, will call all necessary
-     * @param {String} name             the character's name
-     * @param {Int8Array} baseStats     the size 9 array containing all stats
-     * @param {Number} recentlyFinishedLevel the most recently finished level
+     * @param {String}    name                  the character's name
+     * @param {Int8Array} baseStats             the size 9 array containing all stats
+     * @param {Number}    recentlyFinishedLevel the most recently finished level
      */
     constructor(name, baseStats, recentlyFinishedLevel) {
         this.name = name;
@@ -23,6 +23,17 @@ module.exports = class CyberpunkOneShotCharacter {
         this.deriveOtherStats();
         this.generateJobSkillsMoney();
     }
+    assignWeapons() {
+        var primary = Math.floor((Math.random() * 100) + 1);
+        var secondary = Math.floor((Math.random() * 100) + 1);
+        if ((primary >= 1) && (primary <= 10)) {
+
+        } else if ((primary >= 11) && (primary <= 27)) {
+            
+        }
+
+
+    }
     /**
      * Derives some other 'secondary' statistics for the character
      */
@@ -34,17 +45,17 @@ module.exports = class CyberpunkOneShotCharacter {
         this.humanity = this.emp * 10;
         //BTM is really the only stat that's problematic to solve
         if ((this.body > 0) && (this.body <= 2)) {
-            this.btm = 0;
+            this.btm = 0
         } else if ((this.body > 2) && (this.body <= 4)) {
-            this.btm = -1;
+            this.btm = -1
         } else if ((this.body > 4) && (this.body <= 7)) {
-            this.btm = -2;
+            this.btm = -2
         } else if ((this.body > 7) && (this.body <= 9)) {
-            this.btm = -3;
+            this.btm = -3
         } else if (this.body == 10) {
-            this.btm = -4;
+            this.btm = -4
         } else {
-            this.btm = -5;
+            this.btm = -5
         }
     }
     /**
@@ -107,19 +118,24 @@ module.exports = class CyberpunkOneShotCharacter {
      */
     printCharacterToTxt() {
         //Print the header portion
-        sheet = "============================================================" + //60*'='
+        sheet =
+            "============================================================" + //60*'='
             "[NAME: " + this.name + "] ROLE: [" + this.role + "]\n" +
             "============================================================" //60*'='
         //Print the first line of stats
-        sheet += "|[COOL " + this._formatstat(this.cool) + "] [INT  " + this._formatstat(this.int) + "]" +
+        sheet +=
+            "|[COOL " + this._formatstat(this.cool) + "] [INT  " + this._formatstat(this.int) + "]" +
             "[TECH" + this._formatstat(this.tech) + "] [ATTR " + this._formatstat(this.attr) + "]|\n"
         //Print second line of stats
-        sheet += "|[LUCK " + this._formatstat(this.luck) + "] [MA   " + this._formatstat(this.ma) + "]" +
+        sheet +=
+            "|[LUCK " + this._formatstat(this.luck) + "] [MA   " + this._formatstat(this.ma) + "]" +
             "[BODY " + this._formatstat(this.body) + "] [RUN  " + this._formatstat(this.run) + "]|\n"
         //Print the third line of stats
-        sheet += "|[LEAP " + this._formatstat(this.leap) + "] [LIFT " + this._formatstat(this.lift) + "]" +
+        sheet +=
+            "|[LEAP " + this._formatstat(this.leap) + "] [LIFT " + this._formatstat(this.lift) + "]" +
             "[REF |" + this._formatstat(this.tempref) + "/" + this._formatstat(this.ref) + "]       |\n"
         //Print the final line of status
-        sheet += "|          [EMP |" + this._formatstat(this.tempemp) + "/" + this._formatstat(this.emp) + "]                 |"
+        sheet +=
+            "|          [EMP |" + this._formatstat(this.tempemp) + "/" + this._formatstat(this.emp) + "]                 |"
     }
 }

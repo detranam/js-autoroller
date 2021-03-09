@@ -25,14 +25,19 @@ else:
     os.mkdir('json_out',0o666)
     print("JSON Output directory did not exist!\nDirectory was created.")
 
-# json-ify all the *.csv files into a json file with the same name
+
+
+# json-ify all the *.csv files into a json file with the same name, and add all the
+# path names to a txt file for easy consumption by the Javascript reader
 for path in csv_files_to_read:
-    output_path = f'json_out/{path[:len(path)-4]}.json'
-    with open(output_path, 'w') as json_out:
-        with open(path, 'r', encoding='utf8') as csv_file:
-            inputdict = csv.DictReader(csv_file)
-            this_weapon_type_dict = []
-            for row in inputdict:
-                this_weapon_type_dict.append(row)
-            print(f"JSON.Dumping {path} to {output_path}!")
-            json.dump(this_weapon_type_dict, json_out)
+    with open('created_files.txt', 'w') as textout:
+        textout.append(csv_files_to_read)
+        output_path = f'json_out/{path[:len(path)-4]}.json'
+        with open(output_path, 'w') as json_out:
+            with open(path, 'r', encoding='utf8') as csv_file:
+                inputdict = csv.DictReader(csv_file)
+                this_weapon_type_dict = []
+                for row in inputdict:
+                    this_weapon_type_dict.append(row)
+                print(f"JSON.Dumping {path} to {output_path}!")
+                json.dump(this_weapon_type_dict, json_out)
