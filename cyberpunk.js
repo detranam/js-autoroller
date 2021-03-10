@@ -23,6 +23,7 @@ module.exports = class CyberpunkOneShotCharacter {
         this.deriveOtherStats();
         this.generateJobSkillsMoney();
     }
+
     /**
      * Derives some other 'secondary' statistics for the character
      */
@@ -47,6 +48,7 @@ module.exports = class CyberpunkOneShotCharacter {
             this.btm = -5;
         }
     }
+
     /**
      * Generate the character's job, skills, and money based on the 
      * 'previously completed level'
@@ -94,32 +96,78 @@ module.exports = class CyberpunkOneShotCharacter {
         this.standardSkillPoints = 20 + this.currentLevel * 3;
     }
     /**
+     * This helper function takes an array of percents in, with each percent corresponding to a percent chance
+     * of something happening. This also takes in a percent, which was randomly 
+     * @param {*} percentArray 
+     * @param {*} desiredPercent 
+     * @returns the index of the given desiredPercent in the array of given percents
+     */
+    getPercentByIndex(percentArray, desiredPercent) {
+        var totalPercent = 0
+        var index = 0
+        var onward = true
+        var finalIndex = 0
+
+        percentArray.forEach(element => {
+            totalPercent += element
+            if (desiredPercent <= totalPercent) {
+                onward = false
+                finalIndex = index
+            }
+            if (onward) {
+                index++
+            }
+        });
+        return finalIndex
+    }
+
+    /**
+     * Assign a random weapon from the provided json files
+     */
+    assignWeapons() {
+        //TODO: Don't forget to include different 'precision' values into the '100' below,
+        //as the 100 should be replaced with 10**(2 + precision), precision decided from the given decided file.
+        //As a simple outline for later:
+        //  roll for primary percent chance
+        //  load file for the randomly chosen primary
+        //  grab the 'precision'
+        //  roll randomly in that precision, then with that index assign the weapon
+        var randomPrimaryType = Math.floor((Math.random() * 100) + 1);
+    }
+
+    /**
+     * ForMat STat is why this function is poorly named
      * This helper method is only used when printing out the character sheet, as it will convert
      * single digit numbers (4) to (04), allowing for a nicer looking table in the output.
      * @param {Number} stat (integer) stat to be given filler zeroes, if necessary
      */
-    _formatstat(stat) {
+    _fmst(stat) {
         return ('0' + stat).slice(-2)
     }
-    
+
     /**
      * This prints the character to an easily human-readable {NAME}.txt file
      */
     printCharacterToTxt() {
         //Print the header portion
-        sheet = "============================================================" + //60*'='
+        sheet =
+            "============================================================" + //60*'='
             "[NAME: " + this.name + "] ROLE: [" + this.role + "]\n" +
             "============================================================" //60*'='
         //Print the first line of stats
-        sheet += "|[COOL " + this._formatstat(this.cool) + "] [INT  " + this._formatstat(this.int) + "]" +
-            "[TECH" + this._formatstat(this.tech) + "] [ATTR " + this._formatstat(this.attr) + "]|\n"
+        sheet +=
+            "|[COOL " + this._fmst(this.cool) + "] [INT  " + this._fmst(this.int) + "]" +
+            "[TECH" + this._fmst(this.tech) + "] [ATTR " + this._fmst(this.attr) + "]|\n"
         //Print second line of stats
-        sheet += "|[LUCK " + this._formatstat(this.luck) + "] [MA   " + this._formatstat(this.ma) + "]" +
-            "[BODY " + this._formatstat(this.body) + "] [RUN  " + this._formatstat(this.run) + "]|\n"
+        sheet +=
+            "|[LUCK " + this._fmst(this.luck) + "] [MA   " + this._fmst(this.ma) + "]" +
+            "[BODY " + this._fmst(this.body) + "] [RUN  " + this._fmst(this.run) + "]|\n"
         //Print the third line of stats
-        sheet += "|[LEAP " + this._formatstat(this.leap) + "] [LIFT " + this._formatstat(this.lift) + "]" +
-            "[REF |" + this._formatstat(this.tempref) + "/" + this._formatstat(this.ref) + "]       |\n"
+        sheet +=
+            "|[LEAP " + this._fmst(this.leap) + "] [LIFT " + this._fmst(this.lift) + "]" +
+            "[REF |" + this._fmst(this.tempref) + "/" + this._fmst(this.ref) + "]       |\n"
         //Print the final line of status
-        sheet += "|          [EMP |" + this._formatstat(this.tempemp) + "/" + this._formatstat(this.emp) + "]                 |"
+        sheet +=
+            "|          [EMP |" + this._fmst(this.tempemp) + "/" + this._fmst(this.emp) + "]                 |"
     }
 }
