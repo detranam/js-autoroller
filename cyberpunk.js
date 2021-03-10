@@ -132,6 +132,11 @@ module.exports = class CyberpunkOneShotCharacter {
         //  load file for the randomly chosen primary
         //  grab the 'precision'
         //  roll randomly in that precision, then with that index assign the weapon
+
+        //Also important, the location of the files to load will be base named after this file: thus
+        //for all new RPG modules we would need a RPG_module.js file, then a directory of the same name
+        //with the 'percentages' json file, and all the other files necessary. This is a good place to
+        //start utilizing inheritance.
         var randomPrimaryType = Math.floor((Math.random() * 100) + 1);
     }
 
