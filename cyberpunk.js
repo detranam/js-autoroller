@@ -38,9 +38,11 @@ module.exports = class CyberpunkOneShotCharacter {
         //for all new RPG modules we would need a RPG_module.js file, then a directory of the same name
         //with the 'percentages' json file, and all the other files necessary. This is a good place to
         //start utilizing inheritance.
-
-        var primary = Math.floor((Math.random() * PRECIZION) + 1)
-        var secondary = Math.floor((Math.random() * PRECIZION) + 1)
+        var percents = 
+        var primary = Math.floor((Math.random() * precision??) + 1)
+        var secondary = Math.floor((Math.random() * precision??) + 1)
+        //TODO: make sure to take into account if there's a number before the json name that you roll 
+        //for two of that kind of weapon
     }
     /**
      * Derives some other 'secondary' statistics for the character
