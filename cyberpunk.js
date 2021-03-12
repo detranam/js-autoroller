@@ -25,25 +25,7 @@ module.exports = class CyberpunkOneShotCharacter {
         this.generateJobSkillsMoney()
         this.assignWeapons()
     }
-    assignWeapons() {
-        //TODO: Don't forget to include different 'precision' values into the '100' below,
-        //as the 100 should be replaced with 10**(2 + precision), precision decided from the given decided file.
-        //As a simple outline for later:
-        //  roll for primary percent chance
-        //  load file for the randomly chosen primary
-        //  grab the 'precision'
-        //  roll randomly in that precision, then with that index assign the weapon
-
-        //Also important, the location of the files to load will be base named after this file: thus
-        //for all new RPG modules we would need a RPG_module.js file, then a directory of the same name
-        //with the 'percentages' json file, and all the other files necessary. This is a good place to
-        //start utilizing inheritance.
-        var percents = 
-        var primary = Math.floor((Math.random() * precision??) + 1)
-        var secondary = Math.floor((Math.random() * precision??) + 1)
-        //TODO: make sure to take into account if there's a number before the json name that you roll 
-        //for two of that kind of weapon
-    }
+    
     /**
      * Derives some other 'secondary' statistics for the character
      */
@@ -115,42 +97,29 @@ module.exports = class CyberpunkOneShotCharacter {
         this.classSkillPoints = 40 + this.currentLevel * 5
         this.standardSkillPoints = 20 + this.currentLevel * 3
     }
-    /**
-     * This helper function takes an array of percents in, with each percent corresponding to a percent chance
-     * of something happening. This also takes in a percent, which was randomly 
-     * @param {*} percentArray 
-     * @param {*} desiredPercent 
-     * @returns the index of the given desiredPercent in the array of given percents
-     */
-    getPercentByIndex(percentArray, desiredPercent) {
-        var totalPercent = 0
-        var index = 0
-        var onward = true
-        var finalIndex = 0
+    
 
-        percentArray.forEach(element => {
-            totalPercent += element
-            if (desiredPercent <= totalPercent) {
-                onward = false
-                finalIndex = index
-            }
-            if (onward) {
-                index++
-            }
-        })
-        return finalIndex
+    
+    assignWeapons() {
+        //TODO: Don't forget to include different 'precision' values into the '100' below,
+        //as the 100 should be replaced with 10**(2 + precision), precision decided from the given decided file.
+        //As a simple outline for later:
+        //  roll for primary percent chance
+        //  load file for the randomly chosen primary
+        //  grab the 'precision'
+        //  roll randomly in that precision, then with that index assign the weapon
+
+        //Also important, the location of the files to load will be base named after this file: thus
+        //for all new RPG modules we would need a RPG_module.js file, then a directory of the same name
+        //with the 'percentages' json file, and all the other files necessary. This is a good place to
+        //start utilizing inheritance.
+        const percents = require('./cyberpunk/percents.json')
+        var primaryChooser = Math.floor((Math.random() * 100) + 1)
+        var primaryDecisionIndex = getIndexByPercent(percents.primary, primaryChooser)
+        var primaryFilePath = './cyberpunk/' + percents.primary[primaryDecisionIndex]
+        //TODO: make sure to take into account if there's a number before the json name that you roll 
+        //for two of that kind of weapon
     }
-
-    /**
-     * ForMat STat is why this function is poorly named
-     * This helper method is only used when printing out the character sheet, as it will convert
-     * single digit numbers (4) to (04), allowing for a nicer looking table in the output.
-     * @param {Number} stat (integer) stat to be given filler zeroes, if necessary
-     */
-    _fmst(stat) {
-        return ('0' + stat).slice(-2)
-    }
-
     /**
      * This prints the character to an easily human-readable {NAME}.txt file
      */
@@ -175,5 +144,41 @@ module.exports = class CyberpunkOneShotCharacter {
         //Print the final line of status
         sheet +=
             "|          [EMP |" + this._fmst(this.tempemp) + "/" + this._fmst(this.emp) + "]                 |"
+    }
+
+    /**
+     * ForMat STat is why this function is (so very) poorly named
+     * This helper method is only used when printing out the character sheet, as it will convert
+     * single digit numbers (4) to (04), allowing for a nicer looking table in the output.
+     * @param {Number} stat (integer) stat to be given filler zeroes, if necessary
+     */
+     _fmst(stat) {
+        return ('0' + stat).slice(-2)
+    }
+
+    /**
+     * This helper function takes an array of percents in, with each percent corresponding to a percent chance
+     * of something happening. This also takes in a percent, which was randomly 
+     * @param {*} percentArray      The ordered array of percents to be iterated through
+     * @param {*} desiredPercent    The percent we rolled, and desire to know the index of
+     * @returns the index of the given desiredPercent in the array of given percents
+     */
+     getIndexByPercent(percentArray, desiredPercent) {
+        var totalPercent = 0
+        var index = 0
+        var onward = true
+        var finalIndex = 0
+
+        percentArray.forEach(element => {
+            totalPercent += element
+            if (desiredPercent <= totalPercent) {
+                onward = false
+                finalIndex = index
+            }
+            if (onward) {
+                index++
+            }
+        })
+        return finalIndex
     }
 }
