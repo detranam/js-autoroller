@@ -117,9 +117,15 @@ module.exports = class CyberpunkOneShotCharacter {
         var primaryChooser = Math.floor((Math.random() * 100) + 1)
         var primaryDecisionIndex = getIndexByPercent(percents.primary, primaryChooser)
         var primaryFilePath = './cyberpunk/' + percents.primary[primaryDecisionIndex]
+        const weapons = require(primaryFilePath)
         //TODO: make sure to take into account if there's a number before the json name that you roll 
         //for two of that kind of weapon
+
+        //So the best way to do the precision would be to have the precision inside of the percents.json file.
+        //This would be easy to create based on changing my 'percents.json' file into "weapon: {precision = #, % = #}"
+        //This would also help to be automatically done in the python scraper, if possible
     }
+
     /**
      * This prints the character to an easily human-readable {NAME}.txt file
      */
