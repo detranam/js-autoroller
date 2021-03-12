@@ -15,7 +15,7 @@ const CyberpunkCharacter = require("./cyberpunk.js")
 const Die = require("./die.js")
 
 const rollStats = () => {
-    const d10 = new Die(sides = 10);
+    const d10 = new Die(sides = 10)
     //Create an array of size 10 with our correct values in them, to be displayed.
     var characterStats = [
         d10.rollTwoDropLowest(),
@@ -44,7 +44,7 @@ const rollStats = () => {
 
 // This main is for fully creating a 'one-shot' Cyberpunk character
 const main = async () => {
-    const d10 = new Die(sides = 10);
+    const d10 = new Die(sides = 10)
     var characterStats = [
         d10.rollTwoDropLowest(),
         d10.rollTwoDropLowest(),
@@ -56,9 +56,8 @@ const main = async () => {
         d10.rollTwoDropLowest(),
         d10.rollTwoDropLowest()
     ]
-    var oneshot = new CyberpunkCharacter("Peotyr Parkyr", characterStats, 0);
-    console.log(oneshot);
-    
+    var oneshot = new CyberpunkCharacter("Peotyr Parkyr", characterStats, 0)
+    console.log(oneshot)
 }
 // Finally run the program
-main();
+main()

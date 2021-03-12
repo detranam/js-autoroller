@@ -6,47 +6,51 @@ module.exports = class CyberpunkOneShotCharacter {
      * @param {Number}    recentlyFinishedLevel the most recently finished level
      */
     constructor(name, baseStats, recentlyFinishedLevel) {
-        this.name = name;
-        this.int = baseStats[0];
-        this.ref = baseStats[1];
-        this.tempref = baseStats[1];
-        this.tech = baseStats[2];
-        this.cool = baseStats[3];
-        this.attr = baseStats[4];
-        this.luck = baseStats[5];
-        this.ma = baseStats[6];
-        this.body = baseStats[7];
-        this.emp = baseStats[8];
-        this.tempemp = baseStats[8];
+        this.filePath = "cyberpunk"
+        this.name = name
+        this.int = baseStats[0]
+        this.ref = baseStats[1]
+        this.tempref = baseStats[1]
+        this.tech = baseStats[2]
+        this.cool = baseStats[3]
+        this.attr = baseStats[4]
+        this.luck = baseStats[5]
+        this.ma = baseStats[6]
+        this.body = baseStats[7]
+        this.emp = baseStats[8]
+        this.tempemp = baseStats[8]
 
-        this.currentLevel = parseInt(recentlyFinishedLevel); //ensure the level is an int
-        this.deriveOtherStats();
-        this.generateJobSkillsMoney();
+        this.currentLevel = parseInt(recentlyFinishedLevel) //ensure the level is an int
+        this.deriveOtherStats()
+        this.generateJobSkillsMoney()
+        this.assignWeapons()
     }
-<<<<<<< HEAD
-
-=======
     assignWeapons() {
-        var primary = Math.floor((Math.random() * 100) + 1);
-        var secondary = Math.floor((Math.random() * 100) + 1);
-        if ((primary >= 1) && (primary <= 10)) {
+        //TODO: Don't forget to include different 'precision' values into the '100' below,
+        //as the 100 should be replaced with 10**(2 + precision), precision decided from the given decided file.
+        //As a simple outline for later:
+        //  roll for primary percent chance
+        //  load file for the randomly chosen primary
+        //  grab the 'precision'
+        //  roll randomly in that precision, then with that index assign the weapon
 
-        } else if ((primary >= 11) && (primary <= 27)) {
-            
-        }
+        //Also important, the location of the files to load will be base named after this file: thus
+        //for all new RPG modules we would need a RPG_module.js file, then a directory of the same name
+        //with the 'percentages' json file, and all the other files necessary. This is a good place to
+        //start utilizing inheritance.
 
-
+        var primary = Math.floor((Math.random() * PRECIZION) + 1)
+        var secondary = Math.floor((Math.random() * PRECIZION) + 1)
     }
->>>>>>> 9890d19288247edf4e91c3d17635eea0476545ad
     /**
      * Derives some other 'secondary' statistics for the character
      */
     deriveOtherStats() {
-        this.run = this.ma * 3;
-        this.leap = Math.round(this.run / 4);
-        this.lift = this.body * 40;
-        this.save = this.body;
-        this.humanity = this.emp * 10;
+        this.run = this.ma * 3
+        this.leap = Math.round(this.run / 4)
+        this.lift = this.body * 40
+        this.save = this.body
+        this.humanity = this.emp * 10
         //BTM is really the only stat that's problematic to solve
         if ((this.body > 0) && (this.body <= 2)) {
             this.btm = 0
@@ -68,46 +72,46 @@ module.exports = class CyberpunkOneShotCharacter {
      * 'previously completed level'
      */
     generateJobSkillsMoney() {
-        var randomRole = Math.floor((Math.random() * 10) + 1);
+        var randomRole = Math.floor((Math.random() * 10) + 1)
         switch (randomRole) {
             case 1:
-                this.role = 'Rockerboy';
-                break;
+                this.role = 'Rockerboy'
+                break
             case 2:
-                this.role = 'Solo';
-                break;
+                this.role = 'Solo'
+                break
             case 3:
-                this.role = 'Netrunner';
-                break;
+                this.role = 'Netrunner'
+                break
             case 4:
-                this.role = 'Techie';
-                break;
+                this.role = 'Techie'
+                break
             case 5:
-                this.role = 'Medtechie';
-                break;
+                this.role = 'Medtechie'
+                break
             case 6:
-                this.role = 'Media';
-                break;
+                this.role = 'Media'
+                break
             case 7:
-                this.role = 'Cop';
-                break;
+                this.role = 'Cop'
+                break
             case 8:
-                this.role = 'Corporate';
-                break;
+                this.role = 'Corporate'
+                break
             case 9:
-                this.role = 'Fixer';
-                break;
+                this.role = 'Fixer'
+                break
             case 10:
-                this.role = 'Nomad';
-                break;
+                this.role = 'Nomad'
+                break
             default:
                 //Ideally this should never be reached, if we did reach it, just cry
-                throw 'randomRole() somehow got a value that is not between 1 and 10!';
+                throw 'randomRole() somehow got a value that is not between 1 and 10!'
         }
         //now we take into account if the character is created at the start or in the middle of the campaign
-        this.money = 8000 + this.currentLevel * 2000;
-        this.classSkillPoints = 40 + this.currentLevel * 5;
-        this.standardSkillPoints = 20 + this.currentLevel * 3;
+        this.money = 8000 + this.currentLevel * 2000
+        this.classSkillPoints = 40 + this.currentLevel * 5
+        this.standardSkillPoints = 20 + this.currentLevel * 3
     }
     /**
      * This helper function takes an array of percents in, with each percent corresponding to a percent chance
@@ -131,27 +135,8 @@ module.exports = class CyberpunkOneShotCharacter {
             if (onward) {
                 index++
             }
-        });
+        })
         return finalIndex
-    }
-
-    /**
-     * Assign a random weapon from the provided json files
-     */
-    assignWeapons() {
-        //TODO: Don't forget to include different 'precision' values into the '100' below,
-        //as the 100 should be replaced with 10**(2 + precision), precision decided from the given decided file.
-        //As a simple outline for later:
-        //  roll for primary percent chance
-        //  load file for the randomly chosen primary
-        //  grab the 'precision'
-        //  roll randomly in that precision, then with that index assign the weapon
-
-        //Also important, the location of the files to load will be base named after this file: thus
-        //for all new RPG modules we would need a RPG_module.js file, then a directory of the same name
-        //with the 'percentages' json file, and all the other files necessary. This is a good place to
-        //start utilizing inheritance.
-        var randomPrimaryType = Math.floor((Math.random() * 100) + 1);
     }
 
     /**
@@ -175,7 +160,6 @@ module.exports = class CyberpunkOneShotCharacter {
             "============================================================" //60*'='
         //Print the first line of stats
         sheet +=
-<<<<<<< HEAD
             "|[COOL " + this._fmst(this.cool) + "] [INT  " + this._fmst(this.int) + "]" +
             "[TECH" + this._fmst(this.tech) + "] [ATTR " + this._fmst(this.attr) + "]|\n"
         //Print second line of stats
@@ -189,20 +173,5 @@ module.exports = class CyberpunkOneShotCharacter {
         //Print the final line of status
         sheet +=
             "|          [EMP |" + this._fmst(this.tempemp) + "/" + this._fmst(this.emp) + "]                 |"
-=======
-            "|[COOL " + this._formatstat(this.cool) + "] [INT  " + this._formatstat(this.int) + "]" +
-            "[TECH" + this._formatstat(this.tech) + "] [ATTR " + this._formatstat(this.attr) + "]|\n"
-        //Print second line of stats
-        sheet +=
-            "|[LUCK " + this._formatstat(this.luck) + "] [MA   " + this._formatstat(this.ma) + "]" +
-            "[BODY " + this._formatstat(this.body) + "] [RUN  " + this._formatstat(this.run) + "]|\n"
-        //Print the third line of stats
-        sheet +=
-            "|[LEAP " + this._formatstat(this.leap) + "] [LIFT " + this._formatstat(this.lift) + "]" +
-            "[REF |" + this._formatstat(this.tempref) + "/" + this._formatstat(this.ref) + "]       |\n"
-        //Print the final line of status
-        sheet +=
-            "|          [EMP |" + this._formatstat(this.tempemp) + "/" + this._formatstat(this.emp) + "]                 |"
->>>>>>> 9890d19288247edf4e91c3d17635eea0476545ad
     }
 }
