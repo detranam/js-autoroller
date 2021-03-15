@@ -21,11 +21,13 @@ module.exports = class CyberpunkOneShotCharacter {
         this.tempemp = baseStats[8]
 
         this.currentLevel = parseInt(recentlyFinishedLevel) //ensure the level is an int
-        this.deriveOtherStats()
-        this.generateJobSkillsMoney()
+        //this.deriveOtherStats()
+        //this.generateJobSkillsMoney()
         this.assignWeapons()
     }
-    
+
+
+
     /**
      * Derives some other 'secondary' statistics for the character
      */
@@ -97,9 +99,49 @@ module.exports = class CyberpunkOneShotCharacter {
         this.classSkillPoints = 40 + this.currentLevel * 5
         this.standardSkillPoints = 20 + this.currentLevel * 3
     }
-    
 
-    
+    /**
+         * This helper function takes an array of percents in, with each percent corresponding to a percent chance
+         * of something happening. This also takes in a percent, which was randomly 
+         * @param {*} percentArray      The ordered array of percents to be iterated through
+         * @param {*} desiredPercent    The percent we rolled, and desire to know the index of
+         * @returns the index of the given desiredPercent in the array of given percents
+         */
+    getIndexByPercent(percentArray, desiredPercent) {
+        var totalPercent = 0
+        var index = 0
+        var onward = true
+        var finalIndex = 0
+        //console.log(percentArray)
+try {
+    for (weapon in percentArray) {
+        totalPercent += weapon["%"]
+        if (desiredPercent <= totalPercent) {
+            onward = false
+            finalIndex = index
+        }
+        if (onward) {
+            index++
+        }
+    }
+} catch (error) {
+    console.log(error)
+}
+        
+
+        // percentArray.forEach(element => {
+        //     totalPercent += element
+        //     if (desiredPercent <= totalPercent) {
+        //         onward = false
+        //         finalIndex = index
+        //     }
+        //     if (onward) {
+        //         index++
+        //     }
+        // })
+        return finalIndex
+    }
+
     assignWeapons() {
         //TODO: Don't forget to include different 'precision' values into the '100' below,
         //as the 100 should be replaced with 10**(2 + precision), precision decided from the given decided file.
@@ -114,9 +156,11 @@ module.exports = class CyberpunkOneShotCharacter {
         //with the 'percentages' json file, and all the other files necessary. This is a good place to
         //start utilizing inheritance.
         const percents = require('./cyberpunk/percents.json')
+        console.log(percents)
         var primaryChooser = Math.floor((Math.random() * 100) + 1)
-        var primaryDecisionIndex = getIndexByPercent(percents.primary, primaryChooser)
+        var primaryDecisionIndex = this.getIndexByPercent(percents.primary, primaryChooser)
         var primaryFilePath = './cyberpunk/' + percents.primary[primaryDecisionIndex]
+        console.log(primaryFilePath)
         const weapons = require(primaryFilePath)
         //TODO: make sure to take into account if there's a number before the json name that you roll 
         //for two of that kind of weapon
@@ -124,6 +168,16 @@ module.exports = class CyberpunkOneShotCharacter {
         //So the best way to do the precision would be to have the precision inside of the percents.json file.
         //This would be easy to create based on changing my 'percents.json' file into "weapon: {precision = #, % = #}"
         //This would also help to be automatically done in the python scraper, if possible
+    }
+
+    /**
+     * ForMat STat is why this function is (so very) poorly named
+     * This helper method is only used when printing out the character sheet, as it will convert
+     * single digit numbers (4) to (04), allowing for a nicer looking table in the output.
+     * @param {Number} stat (integer) stat to be given filler zeroes, if necessary
+     */
+    _fmst(stat) {
+        return ('0' + stat).slice(-2)
     }
 
     /**
@@ -152,39 +206,7 @@ module.exports = class CyberpunkOneShotCharacter {
             "|          [EMP |" + this._fmst(this.tempemp) + "/" + this._fmst(this.emp) + "]                 |"
     }
 
-    /**
-     * ForMat STat is why this function is (so very) poorly named
-     * This helper method is only used when printing out the character sheet, as it will convert
-     * single digit numbers (4) to (04), allowing for a nicer looking table in the output.
-     * @param {Number} stat (integer) stat to be given filler zeroes, if necessary
-     */
-     _fmst(stat) {
-        return ('0' + stat).slice(-2)
-    }
 
-    /**
-     * This helper function takes an array of percents in, with each percent corresponding to a percent chance
-     * of something happening. This also takes in a percent, which was randomly 
-     * @param {*} percentArray      The ordered array of percents to be iterated through
-     * @param {*} desiredPercent    The percent we rolled, and desire to know the index of
-     * @returns the index of the given desiredPercent in the array of given percents
-     */
-     getIndexByPercent(percentArray, desiredPercent) {
-        var totalPercent = 0
-        var index = 0
-        var onward = true
-        var finalIndex = 0
 
-        percentArray.forEach(element => {
-            totalPercent += element
-            if (desiredPercent <= totalPercent) {
-                onward = false
-                finalIndex = index
-            }
-            if (onward) {
-                index++
-            }
-        })
-        return finalIndex
-    }
+
 }
