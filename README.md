@@ -14,6 +14,7 @@ In all honesty, this app is going to expand a lot. I'm going to need to add some
 - [ ] Allow for importation of **.json* files.
 - [ ] Create a pdf exporter for the 'one shot' character object.
 - [ ] Create a full-fledged character object to allow for different saved outputs into JSON format. This should effectively be created as a copy of the character sheet to allow easy query of, for example.
+- [ ] Ensure correct utilization of console.log, .info, .error, and .info.
 - [ ] HTML/Flask (?) GUI for assigning character traits. This might be easiest done by utilizing python and flask, as I've done that before and it's not very difficult.
 - [ ] Some sort of client-side downloader for filled-out character sheets, whether that includes simply sending the json file, or preferably a pdf downloader to abstract the application from the consumer.
 
