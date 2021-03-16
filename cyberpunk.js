@@ -1,5 +1,3 @@
-const { rejects } = require('node:assert')
-
 module.exports = class CyberpunkOneShotCharacter {
     /**
      * Constructor to create a new character, will call all necessary
@@ -60,8 +58,6 @@ module.exports = class CyberpunkOneShotCharacter {
             }
             resolve();
         })
-
-
     }
 
     /**
@@ -126,10 +122,11 @@ module.exports = class CyberpunkOneShotCharacter {
         let index = 0
         let onward = true
         let finalIndex = 0
-        //console.log(percentArray)
+        
         try {
-            for (var weapon in percentArray) {
-                totalPercent += weapon["%"]
+            for (let i = 0; i < percentArray.length; i++) {
+                const element = percentArray[i];
+                totalPercent += element["%"]
                 if (desiredPercent <= totalPercent) {
                     onward = false
                     finalIndex = index
@@ -170,13 +167,16 @@ module.exports = class CyberpunkOneShotCharacter {
             //for all new RPG modules we would need a RPG_module.js file, then a directory of the same name
             //with the 'percentages' json file, and all the other files necessary. This is a good place to
             //start utilizing inheritance.
-            const percents = require('./cyberpunk/percents.json')
-            //console.log(percents)
+            const percents = require('./cyberpunkfiles/percents.json')
+
+            const primaryPercents = Object.values(percents.primary)
             var primaryChooser = Math.floor((Math.random() * 100) + 1)
             console.log('Primary Chooser Value = ' + primaryChooser)
-            var primaryDecisionIndex = this.getIndexByPercent(percents.primary, primaryChooser)
+            
+            var primaryDecisionIndex = this.getIndexByPercent(primaryPercents, primaryChooser)
             console.log('PrimaryDecisionIndex = ' + primaryDecisionIndex)
-            var primaryFilePath = './cyberpunk/' + percents.primary[primaryDecisionIndex]
+            
+            var primaryFilePath = './cyberpunkfiles/' + Object.keys(percents.primary)[primaryDecisionIndex] //percents.primary[primaryDecisionIndex]
             console.log('FilePath = ' + primaryFilePath)
             //const weapons = require(primaryFilePath)
             //TODO: make sure to take into account if there's a number before the json name that you roll 

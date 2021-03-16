@@ -4,7 +4,7 @@ This application is meant to auto-roll dice to create character sheets for
 various role-playing games, such as Cyberpunk 2020 or Dungeons and Dragons.
 */
 
-const { RSA_X931_PADDING } = require('constants')
+//const { RSA_X931_PADDING } = require('constants')
 //required to take input from command line
 //const readline = require('readline')
 
@@ -14,23 +14,23 @@ const fs = require('fs')
 const CyberpunkCharacter = require("./cyberpunk.js")
 const Die = require("./die.js")
 
-const rollStats = () => {
-    const d10 = new Die(sides = 10)
-    //Create an array of size 10 with our correct values in them, to be displayed.
-    var characterStats = [
-        d10.rollTwoDropLowest(),
-        d10.rollTwoDropLowest(),
-        d10.rollTwoDropLowest(),
-        d10.rollTwoDropLowest(),
-        d10.rollTwoDropLowest(),
-        d10.rollTwoDropLowest(),
-        d10.rollTwoDropLowest(),
-        d10.rollTwoDropLowest(),
-        d10.rollTwoDropLowest()
-    ]
-    characterStats.sort(function (a, b) { return b - a })
-    console.log(characterStats)
-}
+// const rollStats = () => {
+//     const d10 = new Die(sides = 10)
+//     //Create an array of size 10 with our correct values in them, to be displayed.
+//     var characterStats = [
+//         d10.rollTwoDropLowest(),
+//         d10.rollTwoDropLowest(),
+//         d10.rollTwoDropLowest(),
+//         d10.rollTwoDropLowest(),
+//         d10.rollTwoDropLowest(),
+//         d10.rollTwoDropLowest(),
+//         d10.rollTwoDropLowest(),
+//         d10.rollTwoDropLowest(),
+//         d10.rollTwoDropLowest()
+//     ]
+//     characterStats.sort(function (a, b) { return b - a })
+//     console.log(characterStats)
+// }
 
 // Define our program's running order
 // This is for simply printing stats based on input
