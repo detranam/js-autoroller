@@ -57,7 +57,7 @@ const main = async () => {
         d10.rollTwoDropLowest()
     ]
     let oneshot = new CyberpunkCharacter("Peotyr Parkyr", characterStats, 0)
-    oneshot.initialize();
+    await oneshot.initialize();
     console.log(oneshot)
 }
 // Finally run the program

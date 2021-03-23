@@ -6,7 +6,7 @@ module.exports = class CyberpunkOneShotCharacter {
      * @param {Number}    recentlyFinishedLevel the most recently finished level
      */
     constructor(name, baseStats, recentlyFinishedLevel) {
-        this.filePath = "cyberpunk"
+        this.filePath = "./cyberpunkfiles/"
         this.name = name
         this.int = baseStats[0]
         this.ref = baseStats[1]
@@ -19,6 +19,7 @@ module.exports = class CyberpunkOneShotCharacter {
         this.body = baseStats[7]
         this.emp = baseStats[8]
         this.tempemp = baseStats[8]
+        this.primaryWeapons = []
 
         this.currentLevel = parseInt(recentlyFinishedLevel) //ensure the level is an int
     }
@@ -112,7 +113,7 @@ module.exports = class CyberpunkOneShotCharacter {
 
     /**
          * This helper function takes an array of percents in, with each percent corresponding to a percent chance
-         * of something happening. This also takes in a percent, which was randomly 
+         * of something happening. This also takes in a percent, which was randomly created.
          * @param {*} percentArray      The ordered array of percents to be iterated through
          * @param {*} desiredPercent    The percent we rolled, and desire to know the index of
          * @returns the index of the given desiredPercent in the array of given percents
@@ -122,7 +123,7 @@ module.exports = class CyberpunkOneShotCharacter {
         let index = 0
         let onward = true
         let finalIndex = 0
-        
+
         try {
             for (let i = 0; i < percentArray.length; i++) {
                 const element = percentArray[i];
@@ -138,19 +139,31 @@ module.exports = class CyberpunkOneShotCharacter {
         } catch (error) {
             console.log(error)
         }
-
-
-        // percentArray.forEach(element => {
-        //     totalPercent += element
-        //     if (desiredPercent <= totalPercent) {
-        //         onward = false
-        //         finalIndex = index
-        //     }
-        //     if (onward) {
-        //         index++
-        //     }
-        // })
         return finalIndex
+    }
+
+    getWeaponsFromArray(filepath, precision, iterations) {
+        return new Promise((resolve, reject) => {
+            const weaponOptions = require(filepath)
+            let weaponPercent = Math.floor((Math.random() * 10 ** (2 + precision)) + 1)
+            if (!Object.is(NaN, iterations)) { //run multiple times
+                //It's not pretty, but it works.
+                let primaryWeaponIndex = this.getIndexByPercent(weaponOptions, weaponPercent)
+                let primaryWeapon = Object.keys(weaponOptions)[primaryWeaponIndex]
+                this.primaryWeapons.push(primaryWeapon)
+
+                weaponPercent = Math.floor((Math.random() * 10 ** (2 + precision)) + 1)
+
+                primaryWeaponIndex = this.getIndexByPercent(weaponOptions, weaponPercent)
+                primaryWeapon = Object.keys(weaponOptions)[primaryWeaponIndex]
+                this.primaryWeapons.push(primaryWeapon)
+            } else { //run once
+                let primaryWeaponIndex = this.getIndexByPercent(weaponOptions, weaponPercent)
+                let primaryWeapon = Object.values(weaponOptions)[primaryWeaponIndex]
+                this.primaryWeapons.push(primaryWeapon)
+            }
+            resolve();
+        })
     }
 
     assignWeapons() {
@@ -163,21 +176,28 @@ module.exports = class CyberpunkOneShotCharacter {
             //  grab the 'precision'
             //  roll randomly in that precision, then with that index assign the weapon
 
-            //Also important, the location of the files to load will be base named after this file: thus
-            //for all new RPG modules we would need a RPG_module.js file, then a directory of the same name
-            //with the 'percentages' json file, and all the other files necessary. This is a good place to
-            //start utilizing inheritance.
-            const percents = require('./cyberpunkfiles/percents.json')
+            const percents = require(this.filePath + 'percents.json')
 
             const primaryPercents = Object.values(percents.primary)
-            var primaryChooser = Math.floor((Math.random() * 100) + 1)
-            console.log('Primary Chooser Value = ' + primaryChooser)
-            
-            var primaryDecisionIndex = this.getIndexByPercent(primaryPercents, primaryChooser)
-            console.log('PrimaryDecisionIndex = ' + primaryDecisionIndex)
-            
-            var primaryFilePath = './cyberpunkfiles/' + Object.keys(percents.primary)[primaryDecisionIndex] //percents.primary[primaryDecisionIndex]
-            console.log('FilePath = ' + primaryFilePath)
+            let primaryChooser = Math.floor((Math.random() * 100) + 1)
+            console.info('Primary Chooser Value = ' + primaryChooser)
+
+            let primaryDecisionIndex = this.getIndexByPercent(primaryPercents, primaryChooser)
+            console.info('PrimaryDecisionIndex = ' + primaryDecisionIndex)
+            let filename = Object.keys(percents.primary)[primaryDecisionIndex]
+
+            let timesToRun = parseInt(filename[0])
+            if (!Object.is(NaN, timesToRun)) { //if this returns an int, the first char WAS  a number, thus we only have to run that many times
+                filename = filename.slice(1)
+            }
+
+            let primaryFilePath = this.filePath + filename
+            let primaryPrecision = primaryPercents[primaryDecisionIndex]['precision']
+            console.info('FilePath = ' + primaryFilePath)
+            console.info('primary precision is ' + primaryPrecision)
+
+            this.getWeaponsFromArray(primaryFilePath, primaryPrecision, timesToRun)
+
             //const weapons = require(primaryFilePath)
             //TODO: make sure to take into account if there's a number before the json name that you roll 
             //for two of that kind of weapon
