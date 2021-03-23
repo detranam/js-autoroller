@@ -19,7 +19,7 @@ module.exports = class CyberpunkOneShotCharacter {
         this.body = baseStats[7]
         this.emp = baseStats[8]
         this.tempemp = baseStats[8]
-        this.primaryWeapons = []
+        this.weaponList = []
 
         this.currentLevel = parseInt(recentlyFinishedLevel) //ensure the level is an int
     }
@@ -142,7 +142,7 @@ module.exports = class CyberpunkOneShotCharacter {
         return finalIndex
     }
 
-    getWeaponsFromArray(filepath, precision, iterations) {
+    getAndAssignWeapons(filepath, precision, iterations) {
         return new Promise((resolve, reject) => {
             const weaponOptions = require(filepath)
             let weaponPercent = Math.floor((Math.random() * 10 ** (2 + precision)) + 1)
@@ -150,17 +150,17 @@ module.exports = class CyberpunkOneShotCharacter {
                 //It's not pretty, but it works.
                 let primaryWeaponIndex = this.getIndexByPercent(weaponOptions, weaponPercent)
                 let primaryWeapon = Object.keys(weaponOptions)[primaryWeaponIndex]
-                this.primaryWeapons.push(primaryWeapon)
+                this.weaponList.push(primaryWeapon)
 
                 weaponPercent = Math.floor((Math.random() * 10 ** (2 + precision)) + 1)
 
                 primaryWeaponIndex = this.getIndexByPercent(weaponOptions, weaponPercent)
                 primaryWeapon = Object.keys(weaponOptions)[primaryWeaponIndex]
-                this.primaryWeapons.push(primaryWeapon)
+                this.weaponList.push(primaryWeapon)
             } else { //run once
                 let primaryWeaponIndex = this.getIndexByPercent(weaponOptions, weaponPercent)
                 let primaryWeapon = Object.values(weaponOptions)[primaryWeaponIndex]
-                this.primaryWeapons.push(primaryWeapon)
+                this.weaponList.push(primaryWeapon)
             }
             resolve();
         })
@@ -177,13 +177,13 @@ module.exports = class CyberpunkOneShotCharacter {
             //  roll randomly in that precision, then with that index assign the weapon
 
             const percents = require(this.filePath + 'percents.json')
-
+            //Assign primary weapon time!
             const primaryPercents = Object.values(percents.primary)
             let primaryChooser = Math.floor((Math.random() * 100) + 1)
-            console.info('Primary Chooser Value = ' + primaryChooser)
+            // console.info('Primary Chooser Value = ' + primaryChooser)
 
             let primaryDecisionIndex = this.getIndexByPercent(primaryPercents, primaryChooser)
-            console.info('PrimaryDecisionIndex = ' + primaryDecisionIndex)
+            // console.info('PrimaryDecisionIndex = ' + primaryDecisionIndex)
             let filename = Object.keys(percents.primary)[primaryDecisionIndex]
 
             let timesToRun = parseInt(filename[0])
@@ -193,18 +193,31 @@ module.exports = class CyberpunkOneShotCharacter {
 
             let primaryFilePath = this.filePath + filename
             let primaryPrecision = primaryPercents[primaryDecisionIndex]['precision']
-            console.info('FilePath = ' + primaryFilePath)
-            console.info('primary precision is ' + primaryPrecision)
+            // console.info('FilePath = ' + primaryFilePath)
+            // console.info('primary precision is ' + primaryPrecision)
 
-            this.getWeaponsFromArray(primaryFilePath, primaryPrecision, timesToRun)
+            this.getAndAssignWeapons(primaryFilePath, primaryPrecision, timesToRun)
 
-            //const weapons = require(primaryFilePath)
-            //TODO: make sure to take into account if there's a number before the json name that you roll 
-            //for two of that kind of weapon
+            //Assign secondary weapons now
+            const secondaryPercents = Object.values(percents.secondary)
+            let secondaryChooser = Math.floor((Math.random() * 100) + 1)
+            console.info('Primary Chooser Value = ' + secondaryChooser)
 
-            //So the best way to do the precision would be to have the precision inside of the percents.json file.
-            //This would be easy to create based on changing my 'percents.json' file into "weapon: {precision = #, % = #}"
-            //This would also help to be automatically done in the python scraper, if possible
+            let secondaryDecisionIndex = this.getIndexByPercent(secondaryPercents, secondaryChooser)
+            //console.info('PrimaryDecisionIndex = ' + primaryDecisionIndex)
+            filename = Object.keys(percents.secondary)[secondaryDecisionIndex]
+
+            timesToRun = parseInt(filename[0])
+            if (!Object.is(NaN, timesToRun)) { //if this returns an int, the first char WAS  a number, thus we only have to run that many times
+                filename = filename.slice(1)
+            }
+
+            let secondaryFilePath = this.filePath + filename
+            let secondaryPrecision = secondaryPercents[secondaryDecisionIndex]['precision']
+            // console.info('FilePath = ' + secondaryFilePath)
+            // console.info('primary precision is ' + secondaryPrecision)
+
+            this.getAndAssignWeapons(secondaryFilePath, secondaryPrecision, timesToRun)
         })
 
     }
