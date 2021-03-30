@@ -11,11 +11,11 @@ In all honesty, this app is going to expand a lot. I'm going to need to add some
 - [x] Create character object for a 'one shot expendable' character. This should lay most of the groundwork for creating a 'full' character object.
 - [x] Python scraper for Spreadsheets to allow for easier data input: new folder with various 'tools' inside to allow data collection.
 - [x] Extract certain files as either folders or modules, whichever would make the code most readable and maintainable.
-- [ ] Allow for importation of **.json* files.
-- [ ] Create a pdf exporter for the 'one shot' character object.
+- [x] Allow for importation of **.json* files.
+- [ ] Create an ~~pdf~~  exporter for the 'one shot' character object.
 - [ ] Create a full-fledged character object to allow for different saved outputs into JSON format. This should effectively be created as a copy of the character sheet to allow easy query of, for example.
 - [ ] Ensure correct utilization of console.log, .info, .error, and .info.
-- [ ] HTML/Flask (?) GUI for assigning character traits. This might be easiest done by utilizing python and flask, as I've done that before and it's not very difficult.
+- [ ] HTML/Flask/Web-based GUI for assigning character traits. This might be easiest done by utilizing python and flask, as I've done that before and it's not horribly difficult.
 - [ ] Some sort of client-side downloader for filled-out character sheets, whether that includes simply sending the json file, or preferably a pdf downloader to abstract the application from the consumer.
 
 ## JSON Compatibility
