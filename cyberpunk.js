@@ -20,12 +20,14 @@ module.exports = class CyberpunkOneShotCharacter {
         this.emp = baseStats[8]
         this.tempemp = baseStats[8]
         this.weaponList = []
+        this.role = "UNASSIGNED"
 
         this.currentLevel = parseInt(recentlyFinishedLevel) //ensure the level is an int
+
     }
 
     async initialize() {
-        this.deriveOtherStats()
+        await this.deriveOtherStats()
             .catch((error) => { console.error("Error in deriveOtherStats: " + error) })
             .then(() => this.generateJobSkillsMoney())
             .catch((error) => { console.error("Error in generateJobSkillsMoney: " + error) })
@@ -137,7 +139,7 @@ module.exports = class CyberpunkOneShotCharacter {
                 }
             }
         } catch (error) {
-            console.log(error)
+            console.error(error)
         }
         return finalIndex
     }
@@ -151,16 +153,19 @@ module.exports = class CyberpunkOneShotCharacter {
                 let primaryWeaponIndex = this.getIndexByPercent(weaponOptions, weaponPercent)
                 let primaryWeapon = Object.keys(weaponOptions)[primaryWeaponIndex]
                 this.weaponList.push(primaryWeapon)
+                ///console.log(primaryWeapon)
 
                 weaponPercent = Math.floor((Math.random() * 10 ** (2 + precision)) + 1)
 
                 primaryWeaponIndex = this.getIndexByPercent(weaponOptions, weaponPercent)
                 primaryWeapon = Object.keys(weaponOptions)[primaryWeaponIndex]
                 this.weaponList.push(primaryWeapon)
+                //console.log(primaryWeapon)
             } else { //run once
                 let primaryWeaponIndex = this.getIndexByPercent(weaponOptions, weaponPercent)
                 let primaryWeapon = Object.values(weaponOptions)[primaryWeaponIndex]
                 this.weaponList.push(primaryWeapon)
+                //console.log(primaryWeapon)
             }
             resolve();
         })
@@ -168,43 +173,30 @@ module.exports = class CyberpunkOneShotCharacter {
 
     assignWeapons() {
         return new Promise((resolve, reject) => {
-            //TODO: Don't forget to include different 'precision' values into the '100' below,
-            //as the 100 should be replaced with 10**(2 + precision), precision decided from the given decided file.
-            //As a simple outline for later:
-            //  roll for primary percent chance
-            //  load file for the randomly chosen primary
-            //  grab the 'precision'
-            //  roll randomly in that precision, then with that index assign the weapon
-
+            //grab the overall percents file
             const percents = require(this.filePath + 'percents.json')
             //Assign primary weapon time!
             const primaryPercents = Object.values(percents.primary)
             let primaryChooser = Math.floor((Math.random() * 100) + 1)
-            // console.info('Primary Chooser Value = ' + primaryChooser)
 
             let primaryDecisionIndex = this.getIndexByPercent(primaryPercents, primaryChooser)
-            // console.info('PrimaryDecisionIndex = ' + primaryDecisionIndex)
             let filename = Object.keys(percents.primary)[primaryDecisionIndex]
 
             let timesToRun = parseInt(filename[0])
-            if (!Object.is(NaN, timesToRun)) { //if this returns an int, the first char WAS  a number, thus we only have to run that many times
+            if (!Object.is(NaN, timesToRun)) { //if this returns an int, the first char WAS  a number, thus we have to run that many times
                 filename = filename.slice(1)
             }
 
             let primaryFilePath = this.filePath + filename
             let primaryPrecision = primaryPercents[primaryDecisionIndex]['precision']
-            // console.info('FilePath = ' + primaryFilePath)
-            // console.info('primary precision is ' + primaryPrecision)
 
             this.getAndAssignWeapons(primaryFilePath, primaryPrecision, timesToRun)
 
             //Assign secondary weapons now
             const secondaryPercents = Object.values(percents.secondary)
             let secondaryChooser = Math.floor((Math.random() * 100) + 1)
-            console.info('Primary Chooser Value = ' + secondaryChooser)
 
             let secondaryDecisionIndex = this.getIndexByPercent(secondaryPercents, secondaryChooser)
-            //console.info('PrimaryDecisionIndex = ' + primaryDecisionIndex)
             filename = Object.keys(percents.secondary)[secondaryDecisionIndex]
 
             timesToRun = parseInt(filename[0])
@@ -214,8 +206,6 @@ module.exports = class CyberpunkOneShotCharacter {
 
             let secondaryFilePath = this.filePath + filename
             let secondaryPrecision = secondaryPercents[secondaryDecisionIndex]['precision']
-            // console.info('FilePath = ' + secondaryFilePath)
-            // console.info('primary precision is ' + secondaryPrecision)
 
             this.getAndAssignWeapons(secondaryFilePath, secondaryPrecision, timesToRun)
         })
@@ -237,25 +227,31 @@ module.exports = class CyberpunkOneShotCharacter {
      */
     printCharacterToTxt() {
         //Print the header portion
-        sheet =
-            "============================================================" + //60*'='
-            "[NAME: " + this.name + "] ROLE: [" + this.role + "]\n" +
-            "============================================================" //60*'='
-        //Print the first line of stats
-        sheet +=
-            "|[COOL " + this._fmst(this.cool) + "] [INT  " + this._fmst(this.int) + "]" +
-            "[TECH" + this._fmst(this.tech) + "] [ATTR " + this._fmst(this.attr) + "]|\n"
-        //Print second line of stats
-        sheet +=
-            "|[LUCK " + this._fmst(this.luck) + "] [MA   " + this._fmst(this.ma) + "]" +
-            "[BODY " + this._fmst(this.body) + "] [RUN  " + this._fmst(this.run) + "]|\n"
-        //Print the third line of stats
-        sheet +=
-            "|[LEAP " + this._fmst(this.leap) + "] [LIFT " + this._fmst(this.lift) + "]" +
-            "[REF |" + this._fmst(this.tempref) + "/" + this._fmst(this.ref) + "]       |\n"
-        //Print the final line of status
-        sheet +=
-            "|          [EMP |" + this._fmst(this.tempemp) + "/" + this._fmst(this.emp) + "]                 |"
+        return new Promise((resolve, reject) => {
+            let sheet =
+                "========================================\n" + //40*'='
+                "[NAME: " + this.name + "] ROLE: [" + this.role + "]\n" +
+                "========================================\n" //40*'='
+            //Print the first line of stats
+            sheet +=
+                "|[COOL " + this._fmst(this.cool) + "] [INT  " + this._fmst(this.int) + "]" +
+                "[TECH " + this._fmst(this.tech) + "] [ATTR " + this._fmst(this.attr) + "]|\n"
+            //Print second line of stats
+            sheet +=
+                "|[LUCK " + this._fmst(this.luck) + "] [MA   " + this._fmst(this.ma) + "]" +
+                "[BODY " + this._fmst(this.body) + "] [RUN  " + this._fmst(this.run) + "]|\n"
+            //Print the third line of stats
+            sheet +=
+                "|[LEAP " + this._fmst(this.leap) + "] [LIFT " + this._fmst(this.lift) + "]" +
+                "[REF |" + this._fmst(this.tempref) + "/" + this._fmst(this.ref) + "]       |\n"
+            //Print the final line of status
+            sheet +=
+                "|          [EMP |" + this._fmst(this.tempemp) + "/" + this._fmst(this.emp) + "]                |\n"
+            sheet +=
+                "________________________________________" //40*'_'
+            console.log(this.weaponList)
+            console.log(sheet)
+        })
     }
 
 
