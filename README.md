@@ -4,8 +4,11 @@
 
 In all honesty, this app is going to expand a lot. I'm going to need to add some tools, such as a spreadsheet scraper to get all necessary values. Once acquired, those files should be turned into json files for easy cross-compatibility. Potentially even having some sort of HTML page/application to allow for GUI interaction, hopefully allowing people to create their own characters by simply clicking on the traits they want, then potentially exporting it as a json file then utilizing another tool to print the JSON values onto the character sheet PDF.
 
+
+
 ## TODO
 
+### Overall TODO
 - [x] Autoroll and print stats.
 - [x] Allow user input of data in order to calculate various statistics.
 - [x] Create character object for a 'one shot expendable' character. This should lay most of the groundwork for creating a 'full' character object.
@@ -17,6 +20,13 @@ In all honesty, this app is going to expand a lot. I'm going to need to add some
 - [ ] Ensure correct utilization of console.log, .info, .error, and .info.
 - [ ] HTML/Flask/Web-based GUI for assigning character traits. This might be easiest done by utilizing python and flask, as I've done that before and it's not horribly difficult.
 - [ ] Some sort of client-side downloader for filled-out character sheets, whether that includes simply sending the json file, or preferably a pdf downloader to abstract the application from the consumer.
+
+### Oneshot TODO
+- [x] Select Role and Special Ability
+- [x] Select Primary Weapon
+- [x] Select Secondary Weapon(s)
+- [ ] Choose Armor
+- [ ] Choose Cybernetics
 
 ## JSON Compatibility
 
