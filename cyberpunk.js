@@ -27,12 +27,15 @@ module.exports = class CyberpunkOneShotCharacter {
     }
 
     async initialize() {
-        await this.deriveOtherStats()
-            .catch((error) => { console.error("Error in deriveOtherStats: " + error) })
-            .then(() => this.generateJobSkillsMoney())
-            .catch((error) => { console.error("Error in generateJobSkillsMoney: " + error) })
-            .then(() => this.assignWeapons())
-            .catch((error) => { console.error("Error in assignWeapons: " + error) })
+        return this.deriveOtherStats()
+            //.catch((error) => { console.error("Error in deriveOtherStats: " + error) })
+            .then(this.generateJobSkillsMoney())
+            //.catch((error) => { console.error("Error in generateJobSkillsMoney: " + error) })
+            .then(this.assignWeapons())
+            //.then(this.printCharacterToTxt())
+            //.catch((error) => { console.error("Error in assignWeapons: " + error) })
+            //.resolve(0)
+        
     }
 
     /**
@@ -249,8 +252,10 @@ module.exports = class CyberpunkOneShotCharacter {
                 "|          [EMP |" + this._fmst(this.tempemp) + "/" + this._fmst(this.emp) + "]                |\n"
             sheet +=
                 "________________________________________" //40*'_'
-            console.log(this.weaponList)
             console.log(sheet)
+            console.log(this.weaponList)
+
+            resolve();
         })
     }
 
