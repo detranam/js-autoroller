@@ -173,7 +173,8 @@ module.exports = class CyberpunkOneShotCharacter {
                 weaponPercent = Math.floor((Math.random() * 10 ** (2 + precision)) + 1) / parseFloat(10**precision)
                 weaponIndex = this.getIndexByPercent(weaponOptions, weaponPercent)
                 chosenWeapon = Object.values(weaponOptions)[weaponIndex]
-                //TODO: If the 'next' weapon's percent is zero, it's an additional weapon to this current one, must check that
+                //TODO: So, there is no weapon that is last in our weapon.json list that has a tandem weapon, so we don't need
+                //additional safeguards- just check if the next weapon in the list has a '%' value of 'T' for 'tandem weapon'
                 this.weaponList.push(chosenWeapon)
                 console.log("for filepath " + filepath)
                 console.log("weaponpercent is " + weaponPercent)
